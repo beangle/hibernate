@@ -4,7 +4,7 @@
   <groupId>org.beangle.hibernate</groupId>
   <artifactId>beangle-hibernate-core</artifactId>
   <packaging>jar</packaging>
-  <version>5.4.17.Final</version>
+  <version>5.4.21.Final</version>
   <name>Beangle Hibernate Orm Core</name>
   <description>
     Beangle Hibernate Orm Core Shade
