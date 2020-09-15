@@ -86,7 +86,7 @@ public class HqlSqlWalker extends HqlSqlBaseWalker implements ErrorReporter, Par
   private ArrayList<ParameterSpecification> parameterSpecs = new ArrayList<>();
   private int numberOfParametersInSetClause;
 
-  private ArrayList assignmentSpecifications = new ArrayList();
+  private ArrayList<AssignmentSpecification> assignmentSpecifications = new ArrayList<>();
 
   private JoinType impliedJoinType = JoinType.INNER_JOIN;
 
@@ -1313,7 +1313,7 @@ public class HqlSqlWalker extends HqlSqlBaseWalker implements ErrorReporter, Par
     }
   }
 
-  public ArrayList getAssignmentSpecifications() {
+  public ArrayList<AssignmentSpecification> getAssignmentSpecifications() {
     return assignmentSpecifications;
   }
 
@@ -1402,19 +1402,17 @@ public class HqlSqlWalker extends HqlSqlBaseWalker implements ErrorReporter, Par
 
   @Override
   protected void validateMapPropertyExpression(AST node) throws SemanticException {
-//        try {
-//            FromReferenceNode fromReferenceNode = (FromReferenceNode) node;
-//            QueryableCollection collectionPersister = fromReferenceNode.getFromElement().getQueryableCollection();
-//            if ( !Map.class.isAssignableFrom( collectionPersister.getCollectionType().getReturnedClass() ) ) {
-//                throw new SemanticException( "node did not reference a map" );
-//            }
-//        }
-//        catch (SemanticException se) {
-//            throw se;
-//        }
-//        catch (Throwable t) {
-//            throw new SemanticException( "node did not reference a map" );
-//        }
+//    try {
+//      FromReferenceNode fromReferenceNode = (FromReferenceNode) node;
+//      QueryableCollection collectionPersister = fromReferenceNode.getFromElement().getQueryableCollection();
+//      if (!Map.class.isAssignableFrom(collectionPersister.getCollectionType().getReturnedClass())) {
+//        throw new SemanticException("node did not reference a map");
+//      }
+//    } catch (SemanticException se) {
+//      throw se;
+//    } catch (Throwable t) {
+//      throw new SemanticException("node did not reference a map");
+//    }
   }
 
   public Set<String> getTreatAsDeclarationsByPath(String path) {
