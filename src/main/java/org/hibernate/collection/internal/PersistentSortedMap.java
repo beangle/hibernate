@@ -6,19 +6,25 @@
  */
 package org.hibernate.collection.internal;
 
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.persister.collection.BasicCollectionPersister;
 
-import java.io.Serializable;
-import java.util.*;
-
 /**
  * A persistent wrapper for a <tt>java.util.SortedMap</tt>. Underlying
  * collection is a <tt>TreeMap</tt>.
  *
+ * @see java.util.TreeMap
  * @author <a href="mailto:doug.currie@alum.mit.edu">e</a>
  * @see java.util.TreeMap
  */

@@ -4,10 +4,10 @@
   <groupId>org.beangle.hibernate</groupId>
   <artifactId>beangle-hibernate-core</artifactId>
   <packaging>jar</packaging>
-  <version>5.4.21.Final</version>
-  <name>Beangle Hibernate Orm Core</name>
+  <version>5.4.27.Final</version>
+  <name>Hibernate Orm Core-Patched</name>
   <description>
-    Beangle Hibernate Orm Core Shade
+    Hibernate Orm Core Shade,Support Scala Collection
   </description>
 
   <properties>
@@ -74,7 +74,7 @@
     <dependency>
       <groupId>org.jboss.logging</groupId>
       <artifactId>jboss-logging</artifactId>
-      <version>3.3.2.Final</version>
+      <version>3.4.1.Final</version>
       <scope>compile</scope>
       <exclusions>
         <exclusion>
@@ -98,7 +98,7 @@
     <dependency>
       <groupId>org.javassist</groupId>
       <artifactId>javassist</artifactId>
-      <version>3.24.0-GA</version>
+      <version>3.27.0-GA</version>
       <scope>compile</scope>
       <exclusions>
         <exclusion>
@@ -110,7 +110,7 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.10.10</version>
+      <version>1.10.17</version>
       <scope>compile</scope>
       <exclusions>
         <exclusion>
@@ -194,7 +194,7 @@
     <dependency>
       <groupId>org.hibernate.common</groupId>
       <artifactId>hibernate-commons-annotations</artifactId>
-      <version>5.1.0.Final</version>
+      <version>5.1.2.Final</version>
       <scope>compile</scope>
       <exclusions>
         <exclusion>

@@ -6,17 +6,17 @@
  */
 package org.hibernate.collection.spi;
 
-import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SharedSessionContractImplementor;
-import org.hibernate.loader.CollectionAliases;
-import org.hibernate.persister.collection.CollectionPersister;
-import org.hibernate.type.Type;
-
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Iterator;
+
+import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.loader.CollectionAliases;
+import org.hibernate.persister.collection.CollectionPersister;
+import org.hibernate.type.Type;
 
 /**
  * Persistent collections are treated as value objects by Hibernate.

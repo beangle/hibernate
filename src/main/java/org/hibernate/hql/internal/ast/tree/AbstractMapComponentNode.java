@@ -6,8 +6,8 @@
  */
 package org.hibernate.hql.internal.ast.tree;
 
-import antlr.SemanticException;
-import antlr.collections.AST;
+import java.util.Map;
+
 import org.hibernate.hql.internal.antlr.HqlSqlTokenTypes;
 import org.hibernate.hql.internal.ast.util.ColumnHelper;
 import org.hibernate.persister.collection.QueryableCollection;
@@ -15,6 +15,9 @@ import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
+
+import antlr.SemanticException;
+import antlr.collections.AST;
 
 /**
  * Basic support for KEY, VALUE and ENTRY based "qualified identification variables".

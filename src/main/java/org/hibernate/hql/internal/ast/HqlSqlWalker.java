@@ -6,10 +6,19 @@
  */
 package org.hibernate.hql.internal.ast;
 
-import antlr.ASTFactory;
-import antlr.RecognitionException;
-import antlr.SemanticException;
-import antlr.collections.AST;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
 import org.hibernate.QueryException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.internal.JoinSequence;
@@ -21,8 +30,44 @@ import org.hibernate.hql.internal.antlr.HqlSqlBaseWalker;
 import org.hibernate.hql.internal.antlr.HqlSqlTokenTypes;
 import org.hibernate.hql.internal.antlr.HqlTokenTypes;
 import org.hibernate.hql.internal.antlr.SqlTokenTypes;
-import org.hibernate.hql.internal.ast.tree.*;
-import org.hibernate.hql.internal.ast.util.*;
+import org.hibernate.hql.internal.ast.tree.AggregateNode;
+import org.hibernate.hql.internal.ast.tree.AssignmentSpecification;
+import org.hibernate.hql.internal.ast.tree.CastFunctionNode;
+import org.hibernate.hql.internal.ast.tree.CollectionFunction;
+import org.hibernate.hql.internal.ast.tree.CollectionPathNode;
+import org.hibernate.hql.internal.ast.tree.CollectionSizeNode;
+import org.hibernate.hql.internal.ast.tree.ConstructorNode;
+import org.hibernate.hql.internal.ast.tree.DeleteStatement;
+import org.hibernate.hql.internal.ast.tree.DotNode;
+import org.hibernate.hql.internal.ast.tree.EntityJoinFromElement;
+import org.hibernate.hql.internal.ast.tree.FromClause;
+import org.hibernate.hql.internal.ast.tree.FromElement;
+import org.hibernate.hql.internal.ast.tree.FromElementFactory;
+import org.hibernate.hql.internal.ast.tree.FromReferenceNode;
+import org.hibernate.hql.internal.ast.tree.IdentNode;
+import org.hibernate.hql.internal.ast.tree.IndexNode;
+import org.hibernate.hql.internal.ast.tree.InsertStatement;
+import org.hibernate.hql.internal.ast.tree.IntoClause;
+import org.hibernate.hql.internal.ast.tree.MethodNode;
+import org.hibernate.hql.internal.ast.tree.OperatorNode;
+import org.hibernate.hql.internal.ast.tree.ParameterContainer;
+import org.hibernate.hql.internal.ast.tree.ParameterNode;
+import org.hibernate.hql.internal.ast.tree.QueryNode;
+import org.hibernate.hql.internal.ast.tree.ResolvableNode;
+import org.hibernate.hql.internal.ast.tree.RestrictableStatement;
+import org.hibernate.hql.internal.ast.tree.ResultVariableRefNode;
+import org.hibernate.hql.internal.ast.tree.SelectClause;
+import org.hibernate.hql.internal.ast.tree.SelectExpression;
+import org.hibernate.hql.internal.ast.tree.UpdateStatement;
+import org.hibernate.hql.internal.ast.util.ASTPrinter;
+import org.hibernate.hql.internal.ast.util.ASTUtil;
+import org.hibernate.hql.internal.ast.util.AliasGenerator;
+import org.hibernate.hql.internal.ast.util.JoinProcessor;
+import org.hibernate.hql.internal.ast.util.LiteralProcessor;
+import org.hibernate.hql.internal.ast.util.NodeTraverser;
+import org.hibernate.hql.internal.ast.util.SessionFactoryHelper;
+import org.hibernate.hql.internal.ast.util.SyntheticAndFactory;
+import org.hibernate.hql.internal.ast.util.TokenPrinters;
 import org.hibernate.hql.spi.QueryTranslator;
 import org.hibernate.id.BulkInsertionCapableIdentifierGenerator;
 import org.hibernate.id.IdentifierGenerator;
@@ -31,17 +76,27 @@ import org.hibernate.internal.CoreMessageLogger;
 import org.hibernate.internal.log.DeprecationLogger;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.internal.util.collections.ArrayHelper;
-import org.hibernate.param.*;
+import org.hibernate.param.CollectionFilterKeyParameterSpecification;
+import org.hibernate.param.NamedParameterSpecification;
+import org.hibernate.param.ParameterSpecification;
+import org.hibernate.param.PositionalParameterSpecification;
+import org.hibernate.param.VersionTypeSeedParameterSpecification;
 import org.hibernate.persister.collection.CollectionPropertyNames;
 import org.hibernate.persister.collection.QueryableCollection;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.persister.entity.Queryable;
 import org.hibernate.sql.JoinType;
-import org.hibernate.type.*;
+import org.hibernate.type.AssociationType;
+import org.hibernate.type.CompositeType;
+import org.hibernate.type.DbTimestampType;
+import org.hibernate.type.Type;
+import org.hibernate.type.VersionType;
 import org.hibernate.usertype.UserVersionType;
 
-import java.io.Serializable;
-import java.util.*;
+import antlr.ASTFactory;
+import antlr.RecognitionException;
+import antlr.SemanticException;
+import antlr.collections.AST;
 
 import static org.hibernate.hql.spi.QueryTranslator.ERROR_LEGACY_ORDINAL_PARAMS_NO_LONGER_SUPPORTED;
 
@@ -727,7 +782,7 @@ public class HqlSqlWalker extends HqlSqlBaseWalker implements ErrorReporter, Par
       }
 
       // After that, process the JOINs.
-      // Invoke a delegate to do the work, as this is farily complex.
+      // Invoke a delegate to do the work, as this is fairly complex.
       JoinProcessor joinProcessor = new JoinProcessor(this);
       joinProcessor.processJoins(qn);
 
@@ -883,7 +938,7 @@ public class HqlSqlWalker extends HqlSqlBaseWalker implements ErrorReporter, Par
         parameterSpecs.add(0, paramSpec);
 
         if (sessionFactoryHelper.getFactory().getDialect().requiresCastingOfParametersInSelectClause()) {
-          // we need to wrtap the param in a cast()
+          // we need to wrap the param in a cast()
           MethodNode versionMethodNode = (MethodNode) getASTFactory().create(
             HqlSqlTokenTypes.METHOD_CALL,
             "("
@@ -1269,7 +1324,7 @@ public class HqlSqlWalker extends HqlSqlBaseWalker implements ErrorReporter, Par
   }
 
   public boolean isShallowQuery() {
-    // select clauses for insert statements should alwasy be treated as shallow
+    // select clauses for insert statements should always be treated as shallow
     return getStatementType() == INSERT || queryTranslatorImpl.isShallowQuery();
   }
 
