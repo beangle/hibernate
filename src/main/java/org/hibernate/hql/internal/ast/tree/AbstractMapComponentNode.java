@@ -55,15 +55,15 @@ public abstract class AbstractMapComponentNode extends FromReferenceNode impleme
       FromElement sourceFromElement = null;
       if (isAliasRef(mapReference)) {
         final QueryableCollection collectionPersister = mapReference.getFromElement().getQueryableCollection();
-        //if (Map.class.isAssignableFrom(collectionPersister.getCollectionType().getReturnedClass())) {
-        sourceFromElement = mapReference.getFromElement();
-        //}
+//        if (Map.class.isAssignableFrom(collectionPersister.getCollectionType().getReturnedClass())) {
+//          sourceFromElement = mapReference.getFromElement();
+//        }
       } else {
         if (mapReference.getDataType().isCollectionType()) {
           final CollectionType collectionType = (CollectionType) mapReference.getDataType();
-          //if (Map.class.isAssignableFrom(collectionType.getReturnedClass())) {
-          sourceFromElement = mapReference.getFromElement();
-          //}
+//          if (Map.class.isAssignableFrom(collectionType.getReturnedClass())) {
+//            sourceFromElement = mapReference.getFromElement();
+//          }
         }
       }
 

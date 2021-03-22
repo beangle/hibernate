@@ -23,8 +23,8 @@ import java.util.*;
  * A persistent wrapper for a <tt>java.util.Map</tt>. Underlying collection
  * is a <tt>HashMap</tt>.
  *
- * @see java.util.HashMap
  * @author Gavin King
+ * @see java.util.HashMap
  */
 public class PersistentMap extends AbstractPersistentCollection implements Map {
 

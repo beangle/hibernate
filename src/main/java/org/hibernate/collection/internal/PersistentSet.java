@@ -6,16 +6,6 @@
  */
 package org.hibernate.collection.internal;
 
-import java.io.Serializable;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
@@ -23,13 +13,18 @@ import org.hibernate.loader.CollectionAliases;
 import org.hibernate.persister.collection.CollectionPersister;
 import org.hibernate.type.Type;
 
+import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+
 
 /**
  * A persistent wrapper for a <tt>java.util.Set</tt>. The underlying
  * collection is a <tt>HashSet</tt>.
  *
- * @see java.util.HashSet
  * @author Gavin King
+ * @see java.util.HashSet
  */
 public class PersistentSet extends AbstractPersistentCollection implements java.util.Set {
   protected Set set;

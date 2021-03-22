@@ -6,14 +6,10 @@
  */
 package org.hibernate.action.internal;
 
-import java.io.Serializable;
-
 import org.hibernate.AssertionFailure;
 import org.hibernate.HibernateException;
 import org.hibernate.collection.spi.PersistentCollection;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
-import org.hibernate.event.service.spi.EventListenerGroup;
-import org.hibernate.event.spi.EventType;
 import org.hibernate.event.spi.PostCollectionUpdateEvent;
 import org.hibernate.event.spi.PostCollectionUpdateEventListener;
 import org.hibernate.event.spi.PreCollectionUpdateEvent;
@@ -21,6 +17,8 @@ import org.hibernate.event.spi.PreCollectionUpdateEventListener;
 import org.hibernate.persister.collection.CollectionPersister;
 import org.hibernate.pretty.MessageHelper;
 import org.hibernate.stat.spi.StatisticsImplementor;
+
+import java.io.Serializable;
 
 /**
  * The action for updating a collection
@@ -97,32 +95,31 @@ public final class CollectionUpdateAction extends CollectionAction {
   }
 
   private void preUpdate() {
-    final EventListenerGroup<PreCollectionUpdateEventListener> listenerGroup = listenerGroup(EventType.PRE_COLLECTION_UPDATE);
-    if (listenerGroup.isEmpty()) {
-      return;
-    }
-    final PreCollectionUpdateEvent event = new PreCollectionUpdateEvent(
+    getFastSessionServices()
+      .eventListenerGroup_PRE_COLLECTION_UPDATE
+      .fireLazyEventOnEachListener(this::newPreCollectionUpdateEvent, PreCollectionUpdateEventListener::onPreUpdateCollection);
+  }
+
+  private PreCollectionUpdateEvent newPreCollectionUpdateEvent() {
+    return new PreCollectionUpdateEvent(
       getPersister(),
       getCollection(),
       eventSource()
     );
-    for (PreCollectionUpdateEventListener listener : listenerGroup.listeners()) {
-      listener.onPreUpdateCollection(event);
-    }
   }
 
   private void postUpdate() {
-    final EventListenerGroup<PostCollectionUpdateEventListener> listenerGroup = listenerGroup(EventType.POST_COLLECTION_UPDATE);
-    if (listenerGroup.isEmpty()) {
-      return;
-    }
-    final PostCollectionUpdateEvent event = new PostCollectionUpdateEvent(
+    getFastSessionServices()
+      .eventListenerGroup_POST_COLLECTION_UPDATE
+      .fireLazyEventOnEachListener(this::newPostCollectionUpdateEvent, PostCollectionUpdateEventListener::onPostUpdateCollection);
+  }
+
+  private PostCollectionUpdateEvent newPostCollectionUpdateEvent() {
+    return new PostCollectionUpdateEvent(
       getPersister(),
       getCollection(),
       eventSource()
     );
-    for (PostCollectionUpdateEventListener listener : listenerGroup.listeners()) {
-      listener.onPostUpdateCollection(event);
-    }
   }
+
 }

@@ -6,23 +6,23 @@
  */
 package org.hibernate.collection.internal;
 
-import java.io.Serializable;
-import java.util.Comparator;
-import java.util.SortedSet;
-import java.util.TreeMap;
-
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.persister.collection.BasicCollectionPersister;
 
+import java.io.Serializable;
+import java.util.Comparator;
+import java.util.SortedSet;
+import java.util.TreeMap;
+
 /**
  * A persistent wrapper for a <tt>java.util.SortedSet</tt>. Underlying
  * collection is a <tt>TreeSet</tt>.
  *
- * @see java.util.TreeSet
  * @author <a href="mailto:doug.currie@alum.mit.edu">e</a>
+ * @see java.util.TreeSet
  */
 public class PersistentSortedSet extends PersistentSet implements SortedSet {
   protected Comparator comparator;
