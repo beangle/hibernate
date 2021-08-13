@@ -243,6 +243,10 @@ public abstract class AbstractPersistentCollection implements Serializable, Pers
         } catch (Exception e) {
           LOG.warn("Unable to close temporary session used to load lazy collection associated to no session");
         }
+      } else {
+        if (!session.isTransactionInProgress()) {
+          session.getJdbcCoordinator().afterTransaction();
+        }
       }
     }
   }

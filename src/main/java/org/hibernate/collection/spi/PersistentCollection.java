@@ -437,5 +437,12 @@ public interface PersistentCollection {
    * @return The orphans
    */
   Collection getOrphans(Serializable snapshot, String entityName);
-
+  /**
+   * Is the collection newly instantiated?
+   *
+   * @return {@code true} if the collection is newly instantiated
+   */
+  default boolean isNewlyInstantiated() {
+    return getKey() == null && !isDirty();
+  }
 }
