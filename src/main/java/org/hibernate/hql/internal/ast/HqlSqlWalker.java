@@ -45,6 +45,7 @@ import org.hibernate.hql.internal.ast.tree.FromElement;
 import org.hibernate.hql.internal.ast.tree.FromElementFactory;
 import org.hibernate.hql.internal.ast.tree.FromReferenceNode;
 import org.hibernate.hql.internal.ast.tree.IdentNode;
+import org.hibernate.hql.internal.ast.tree.ImpliedFromElement;
 import org.hibernate.hql.internal.ast.tree.IndexNode;
 import org.hibernate.hql.internal.ast.tree.InsertStatement;
 import org.hibernate.hql.internal.ast.tree.IntoClause;
@@ -517,6 +518,15 @@ public class HqlSqlWalker extends HqlSqlBaseWalker implements ErrorReporter, Par
       throw new SemanticException(e.getMessage());
     }
   }
+  private boolean hasAnyForcibleNotFoundImplicitJoins;
+
+  public void registerForcibleNotFoundImplicitJoin(ImpliedFromElement impliedJoin) {
+    hasAnyForcibleNotFoundImplicitJoins = true;
+  }
+
+  public boolean hasAnyForcibleNotFoundImplicitJoins() {
+    return hasAnyForcibleNotFoundImplicitJoins;
+  }
 
   private static class WithClauseVisitor implements NodeTraverser.VisitationStrategy {
     private final FromElement joinFragment;
@@ -714,7 +724,7 @@ public class HqlSqlWalker extends HqlSqlBaseWalker implements ErrorReporter, Par
       final FromElement fromElement = (FromElement) fromElements.get(0);
       try {
         LOG.tracev("Attempting to resolve property [{0}] as a non-qualified ref", identText);
-        return fromElement.getPropertyMapping(identText).toType(identText) != null;
+        return fromElement.isNonQualifiedPropertyRef( identText );
       } catch (QueryException e) {
         // Should mean that no such property was found
       }
@@ -883,7 +893,7 @@ public class HqlSqlWalker extends HqlSqlBaseWalker implements ErrorReporter, Par
       }
 
       final String fragment = capableGenerator.determineBulkInsertionIdentifierGenerationSelectFragment(
-        sessionFactoryHelper.getFactory().getDialect()
+          sessionFactoryHelper.getFactory().getSqlStringGenerationContext()
       );
       if (fragment != null) {
         // we got a fragment from the generator, so alter the sql tree...
