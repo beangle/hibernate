@@ -52,6 +52,7 @@ extract(){
   "org/hibernate/metamodel/model/domain/internal/PluralAttributeBuilder.java"
   "org/hibernate/sql/results/graph/collection/internal/ListInitializer.java"
   "org/hibernate/sql/results/graph/collection/internal/MapInitializer.java"
+  "org/hibernate/sql/results/graph/collection/internal/SetInitializer.java"
   )
   for f in ${files[@]}
   do

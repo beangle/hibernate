@@ -119,7 +119,7 @@ public class PluralAttributeBuilder<D, C, E, K> {
 		else if (attributeJtd.getJavaTypeClass().getName().contains(".Set")|| attributeJtd.getJavaTypeClass().getName().contains(".HashSet")) {
 			return new SetAttributeImpl( builder, metadataContext );
 		}
-		else if (attributeJtd.getJavaTypeClass().getName().contains(".Buffer")) {
+		else if (attributeJtd.getJavaTypeClass().getName().contains(".Buffer") || attributeJtd.getJavaTypeClass().getName().contains(".Seq")) {
 			return new BagAttributeImpl( builder, metadataContext );
 		}
 		else if (attributeJtd.getJavaTypeClass().getName().contains(".Map")|| attributeJtd.getJavaTypeClass().getName().contains(".HashMap")) {
