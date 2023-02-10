@@ -4,7 +4,7 @@
   <groupId>org.beangle.hibernate</groupId>
   <artifactId>beangle-hibernate-core</artifactId>
   <packaging>jar</packaging>
-  <version>6.2.0.CR2</version>
+  <version>6.2.0.CR2.1</version>
   <name>Hibernate Orm Core-Patched</name>
   <description>
     Hibernate Orm Core Shade,Support Scala Collection
@@ -18,6 +18,7 @@
     <mvn.compiler.version>3.8.1</mvn.compiler.version>
     <mvn.javadoc.version>3.2.0</mvn.javadoc.version>
     <additionalparam>-Xdoclint:none</additionalparam>
+    <hibernate.version>6.2.0.CR2</hibernate.version>
   </properties>
 
   <licenses>
@@ -69,7 +70,7 @@
     <dependency>
       <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>${project.version}</version>
+      <version>${hibernate.version}</version>
       <exclusions>
         <exclusion>
           <artifactId>*</artifactId>
@@ -262,6 +263,9 @@
                     <exclude>org/hibernate/metamodel/model/domain/internal/PluralAttributeBuilder*</exclude>
                     <exclude>org/hibernate/sql/results/graph/collection/internal/ListInitializer*</exclude>
                     <exclude>org/hibernate/sql/results/graph/collection/internal/MapInitializer*</exclude>
+
+                    <exclude>org/hibernate/sql/model/PreparableMutationOperation*</exclude>
+                    <exclude>org/hibernate/sql/model/jdbc/JdbcUpdateMutation*</exclude>
                   </excludes>
                 </filter>
                 <filter>
