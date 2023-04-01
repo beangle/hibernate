@@ -67,4 +67,5 @@ extract "$1"
 extract "$2"
 cd /tmp
 
+echo meld "hibernate-core-$1" "hibernate-core-$2"
 meld "hibernate-core-$1" "hibernate-core-$2"

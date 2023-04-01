@@ -289,8 +289,8 @@ public abstract class AbstractPersistentCollection<E> implements Serializable, P
 				final PersistenceContext persistenceContext = session.getPersistenceContext();
 				if ( !session.isTransactionInProgress()
 						&& ( !persistenceContext.hasLoadContext()
-						|| ( persistenceContext.hasLoadContext()
-						&& persistenceContext.getLoadContexts().isLoadingFinished() ) ) ) {
+							|| ( persistenceContext.hasLoadContext()
+								&& persistenceContext.getLoadContexts().isLoadingFinished() ) ) ) {
 					session.getJdbcCoordinator().afterTransaction();
 				}
 			}
