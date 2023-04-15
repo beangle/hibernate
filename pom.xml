@@ -248,9 +248,9 @@
                 <filter>
                   <artifact>org.hibernate.orm:hibernate-core</artifact>
                   <excludes>
-                    <exclude>org/hibernate/action/internal/CollectionUpdateAction*</exclude>
+                    <exclude>org/hibernate/action/internal/CollectionUpdateAction</exclude>
                     <exclude>org/hibernate/collection/spi/AbstractPersistentCollection*</exclude>
-                    <exclude>org/hibernate/collection/spi/PersistentArrayHolder*</exclude>
+                    <exclude>org/hibernate/collection/spi/PersistentArrayHolder</exclude>
                     <exclude>org/hibernate/collection/spi/PersistentBag*</exclude>
                     <exclude>org/hibernate/collection/spi/PersistentCollection*</exclude>
                     <exclude>org/hibernate/collection/spi/PersistentIdentifierBag*</exclude>
@@ -258,14 +258,16 @@
                     <exclude>org/hibernate/collection/spi/PersistentMap*</exclude>
                     <exclude>org/hibernate/collection/spi/PersistentSet*</exclude>
 
-                    <exclude>org/hibernate/metamodel/internal/BaseAttributeMetadata*</exclude>
+                    <exclude>org/hibernate/metamodel/internal/BaseAttributeMetadata</exclude>
                     <exclude>org/hibernate/metamodel/internal/PluralAttributeMetadataImpl*</exclude>
-                    <exclude>org/hibernate/metamodel/model/domain/internal/PluralAttributeBuilder*</exclude>
-                    <exclude>org/hibernate/sql/results/graph/collection/internal/ListInitializer*</exclude>
-                    <exclude>org/hibernate/sql/results/graph/collection/internal/MapInitializer*</exclude>
+                    <exclude>org/hibernate/metamodel/model/domain/internal/PluralAttributeBuilder</exclude>
 
-                    <exclude>org/hibernate/sql/model/PreparableMutationOperation*</exclude>
-                    <exclude>org/hibernate/sql/model/jdbc/JdbcUpdateMutation*</exclude>
+                    <exclude>org/hibernate/sql/results/graph/collection/internal/ListInitializer</exclude>
+                    <exclude>org/hibernate/sql/results/graph/collection/internal/MapInitializer</exclude>
+                    <exclude>org/hibernate/sql/results/graph/collection/internal/SetInitializer</exclude>
+
+                    <exclude>org/hibernate/sql/model/jdbc/JdbcUpdateMutation</exclude>
+                    <exclude>org/hibernate/sql/model/PreparableMutationOperation</exclude>
                   </excludes>
                 </filter>
                 <filter>
