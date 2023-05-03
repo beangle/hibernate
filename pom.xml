@@ -4,7 +4,7 @@
   <groupId>org.beangle.hibernate</groupId>
   <artifactId>beangle-hibernate-core</artifactId>
   <packaging>jar</packaging>
-  <version>6.2.1.Final</version>
+  <version>6.2.2.Final</version>
   <name>Hibernate Orm Core-Patched</name>
   <description>
     Hibernate Orm Core Shade,Support Scala Collection
@@ -18,7 +18,7 @@
     <mvn.compiler.version>3.8.1</mvn.compiler.version>
     <mvn.javadoc.version>3.2.0</mvn.javadoc.version>
     <additionalparam>-Xdoclint:none</additionalparam>
-    <hibernate.version>6.2.1.Final</hibernate.version>
+    <hibernate.version>6.2.2.Final</hibernate.version>
   </properties>
 
   <licenses>
