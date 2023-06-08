@@ -4,7 +4,7 @@ if [ "$2" = "" ]; then
     echo "Usage:compare.sh old_version new_version"
     exit
 fi
-export M2_REMOTE_REPO="https://maven.aliyun.com/nexus/content/groups/public"
+export M2_REMOTE_REPO="https://repo1.maven.org/maven2"
 export M2_REPO="$HOME/.m2/repository"
 
 download(){
@@ -15,7 +15,7 @@ download(){
   if [ ! -f $zip_file ]; then
     mkdir -p $zip_dir
     cd $zip_dir||exit
-    echo $zip_url
+    echo "downloading $zip_url"
     if wget $zip_url 2>/dev/null; then
         echo "fetching $zip_file"
       else
