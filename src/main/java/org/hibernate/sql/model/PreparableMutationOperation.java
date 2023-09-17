@@ -67,9 +67,9 @@ public interface PreparableMutationOperation extends MutationOperation {
 		}
 		else if ( getMutationType() == MutationType.UPDATE ) {
 			// we cannot batch updates against optional tables
-			//if ( getTableDetails().isOptional() ) {
+			if ( getTableDetails().isOptional() ) {
 				return false;
-			//}
+			}
 		}
 
 		return getExpectation().canBeBatched();

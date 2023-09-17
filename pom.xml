@@ -4,7 +4,7 @@
   <groupId>org.beangle.hibernate</groupId>
   <artifactId>beangle-hibernate-core</artifactId>
   <packaging>jar</packaging>
-  <version>6.2.7.Final</version>
+  <version>6.3.0.Final</version>
   <name>Hibernate Orm Core-Patched</name>
   <description>
     Hibernate Orm Core Shade,Support Scala Collection
@@ -18,7 +18,7 @@
     <mvn.compiler.version>3.8.1</mvn.compiler.version>
     <mvn.javadoc.version>3.2.0</mvn.javadoc.version>
     <additionalparam>-Xdoclint:none</additionalparam>
-    <hibernate.version>6.2.7.Final</hibernate.version>
+    <hibernate.version>6.3.0.Final</hibernate.version>
   </properties>
 
   <licenses>
@@ -129,7 +129,7 @@
     <dependency>
       <groupId>io.smallrye</groupId>
       <artifactId>jandex</artifactId>
-      <version>3.0.5</version>
+      <version>3.1.2</version>
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
@@ -153,7 +153,7 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.12.23</version>
+      <version>1.14.7</version>
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
