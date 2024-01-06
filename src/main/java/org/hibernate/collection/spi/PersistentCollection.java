@@ -19,8 +19,6 @@ import org.hibernate.persister.collection.CollectionPersister;
 import org.hibernate.persister.collection.mutation.InsertRowsCoordinator;
 import org.hibernate.type.Type;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 /**
  * Persistent collections are treated as value objects by Hibernate.
  * They have no independent existence beyond the entity holding a
@@ -84,7 +82,7 @@ public interface PersistentCollection<E> extends LazyInitializable {
 	 * @param role The collection role
 	 * @param snapshot The snapshot state
 	 */
-	void setSnapshot(@Nullable Object key, @Nullable String role, @Nullable Serializable snapshot);
+	void setSnapshot(Object key, String role, Serializable snapshot);
 
 	/**
 	 * After flushing, clear any "queued" additions, since the
