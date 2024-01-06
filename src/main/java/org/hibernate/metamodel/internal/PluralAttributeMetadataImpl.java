@@ -206,6 +206,7 @@ class PluralAttributeMetadataImpl<X, Y, E>
 			return CollectionClassification.ARRAY;
 		}
 		else {
+                        // reminder will be scala collection
 			return collection.getCollectionType().getCollectionClassification();
 		}
 	}

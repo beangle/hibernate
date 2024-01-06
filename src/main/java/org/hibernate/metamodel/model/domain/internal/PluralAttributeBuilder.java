@@ -121,6 +121,7 @@ public class PluralAttributeBuilder<D, C, E, K> {
 		else if ( Collection.class.isAssignableFrom( attributeJtd.getJavaTypeClass() ) ) {
 			return new BagAttributeImpl( builder, metadataContext );
 		}
+                // scala collection
 		else if (attributeJtd.getJavaTypeClass().getName().contains(".Set")|| attributeJtd.getJavaTypeClass().getName().contains(".HashSet")) {
 			return new SetAttributeImpl( builder, metadataContext );
 		}

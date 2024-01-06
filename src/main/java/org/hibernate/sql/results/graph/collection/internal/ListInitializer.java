@@ -59,6 +59,8 @@ public class ListInitializer extends AbstractImmediateCollectionInitializer {
 		return CONCRETE_NAME;
 	}
 
+        //ignore cast to hibernate collection instance, for extends persistent type.
+
 	@Override
 	protected void readCollectionRow(
 			CollectionKey collectionKey,
@@ -68,6 +70,11 @@ public class ListInitializer extends AbstractImmediateCollectionInitializer {
 		if ( indexValue == null ) {
 			throw new HibernateException( "Illegal null value for list index encountered while reading: "
 					+ getCollectionAttributeMapping().getNavigableRole() );
+		}
+		final Object element = elementAssembler.assemble( rowProcessingState );
+		if ( element == null ) {
+			// If element is null, then NotFoundAction must be IGNORE
+			return;
 		}
 		int index = indexValue;
 
@@ -79,7 +86,7 @@ public class ListInitializer extends AbstractImmediateCollectionInitializer {
 			loadingState.add( i, null );
 		}
 
-		loadingState.set( index, elementAssembler.assemble( rowProcessingState ) );
+		loadingState.set( index, element );
 	}
 
 	@Override

@@ -45,6 +45,7 @@ public abstract class BaseAttributeMetadata<X, Y> implements AttributeMetadata<X
 		else if ( member instanceof Field ) {
 			declaredType = ( (Field) member ).getType();
 		}
+                //scala option
 		else if ( member instanceof Method m) {
 			if(m.getReturnType().getName().equals("scala.Option")){
 				declaredType = propertyMapping.getType().getReturnedClass();
