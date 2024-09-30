@@ -53,8 +53,6 @@ extract(){
   "org/hibernate/sql/results/graph/collection/internal/ListInitializer.java"
   "org/hibernate/sql/results/graph/collection/internal/MapInitializer.java"
   "org/hibernate/sql/results/graph/collection/internal/SetInitializer.java"
-  "org/hibernate/sql/model/PreparableMutationOperation.java"
-  "org/hibernate/sql/model/jdbc/JdbcUpdateMutation.java"
   )
   for f in ${files[@]}
   do
