@@ -4,7 +4,7 @@
   <groupId>org.beangle.hibernate</groupId>
   <artifactId>beangle-hibernate-core</artifactId>
   <packaging>jar</packaging>
-  <version>6.6.1.Final</version>
+  <version>6.6.2.Final</version>
   <name>Hibernate Orm Core-Patched</name>
   <description>
     Hibernate Orm Core Shade,Support Scala Collection
@@ -18,7 +18,7 @@
     <mvn.compiler.version>3.8.1</mvn.compiler.version>
     <mvn.javadoc.version>3.2.0</mvn.javadoc.version>
     <additionalparam>-Xdoclint:none</additionalparam>
-    <hibernate.version>6.6.1.Final</hibernate.version>
+    <hibernate.version>6.6.2.Final</hibernate.version>
   </properties>
 
   <licenses>
@@ -68,11 +68,6 @@
   </dependencyManagement>
   <dependencies>
     <dependency>
-      <groupId>org.checkerframework</groupId>
-      <artifactId>checker-qual</artifactId>
-      <version>3.47.0</version>
-    </dependency>
-    <dependency>
       <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-core</artifactId>
       <version>${hibernate.version}</version>
@@ -90,8 +85,8 @@
       <scope>compile</scope>
       <exclusions>
         <exclusion>
-          <artifactId>xml-apis</artifactId>
           <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -102,8 +97,8 @@
       <scope>compile</scope>
       <exclusions>
         <exclusion>
-          <artifactId>xml-apis</artifactId>
           <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -111,23 +106,23 @@
       <groupId>org.jboss.logging</groupId>
       <artifactId>jboss-logging</artifactId>
       <version>3.5.0.Final</version>
-      <scope>compile</scope>
+      <scope>runtime</scope>
       <exclusions>
         <exclusion>
-          <artifactId>xml-apis</artifactId>
           <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
     <dependency>
       <groupId>org.hibernate.common</groupId>
       <artifactId>hibernate-commons-annotations</artifactId>
-      <version>7.0.1.Final</version>
+      <version>7.0.3.Final</version>
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
-          <artifactId>xml-apis</artifactId>
           <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -138,8 +133,8 @@
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
-          <artifactId>xml-apis</artifactId>
           <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -150,8 +145,8 @@
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
-          <artifactId>xml-apis</artifactId>
           <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -162,8 +157,8 @@
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
-          <artifactId>xml-apis</artifactId>
           <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -174,8 +169,8 @@
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
-          <artifactId>xml-apis</artifactId>
           <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -186,8 +181,8 @@
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
-          <artifactId>xml-apis</artifactId>
           <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -198,8 +193,8 @@
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
-          <artifactId>xml-apis</artifactId>
           <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -210,8 +205,8 @@
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
-          <artifactId>xml-apis</artifactId>
           <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
