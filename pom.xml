@@ -4,7 +4,7 @@
   <groupId>org.beangle.hibernate</groupId>
   <artifactId>beangle-hibernate-core</artifactId>
   <packaging>jar</packaging>
-  <version>6.6.3.Final</version>
+  <version>6.6.4.Final</version>
   <name>Hibernate Orm Core-Patched</name>
   <description>
     Hibernate Orm Core Shade,Support Scala Collection
@@ -18,7 +18,7 @@
     <mvn.compiler.version>3.8.1</mvn.compiler.version>
     <mvn.javadoc.version>3.2.0</mvn.javadoc.version>
     <additionalparam>-Xdoclint:none</additionalparam>
-    <hibernate.version>6.6.3.Final</hibernate.version>
+    <hibernate.version>6.6.4.Final</hibernate.version>
   </properties>
 
   <licenses>
@@ -45,18 +45,6 @@
     </developer>
   </developers>
 
-  <distributionManagement>
-    <snapshotRepository>
-      <id>sonatype-nexus-snapshots</id>
-      <name>Sonatype Nexus Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-    </snapshotRepository>
-    <repository>
-      <id>sonatype-nexus-staging</id>
-      <name>Nexus Release Repository</name>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -219,6 +207,18 @@
   <build>
     <defaultGoal>clean install</defaultGoal>
     <plugins>
+      <!-- central发布插件 -->
+      <plugin>
+        <groupId>org.sonatype.central</groupId>
+        <artifactId>central-publishing-maven-plugin</artifactId>
+        <version>0.6.0</version>
+        <extensions>true</extensions>
+        <configuration>
+          <publishingServerId>central</publishingServerId>
+          <tokenAuth>true</tokenAuth>
+          <deploymentName>${project.groupId}:${project.artifactId}:${project.version}</deploymentName>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
