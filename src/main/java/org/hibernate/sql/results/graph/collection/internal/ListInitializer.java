@@ -1,8 +1,6 @@
 /*
- * Hibernate, Relational Persistence for Idiomatic Java
- *
- * License: GNU Lesser General Public License (LGPL), version 2.1 or later
- * See the lgpl.txt file in the root directory or http://www.gnu.org/licenses/lgpl-2.1.html
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Red Hat Inc. and Hibernate Authors
  */
 package org.hibernate.sql.results.graph.collection.internal;
 
@@ -28,7 +26,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * CollectionInitializer for PersistentList loading
- * 
+ *
  * @author Steve Ebersole
  */
 public class ListInitializer extends AbstractImmediateCollectionInitializer<AbstractImmediateCollectionInitializer.ImmediateCollectionInitializerData> {
@@ -120,10 +118,13 @@ public class ListInitializer extends AbstractImmediateCollectionInitializer<Abst
 		final Initializer<?> initializer = elementAssembler.getInitializer();
 		if ( initializer != null ) {
 			final RowProcessingState rowProcessingState = data.getRowProcessingState();
-			final Integer index = listIndexAssembler.assemble( rowProcessingState );
+			Integer index = listIndexAssembler.assemble( rowProcessingState );
 			if ( index != null ) {
 				final PersistentList<?> list = (PersistentList<?>)getCollectionInstance( data );
 				assert list != null;
+				if ( listIndexBase != 0 ) {
+					index -= listIndexBase;
+				}
 				initializer.resolveInstance( list.get( index ), rowProcessingState );
 			}
 		}

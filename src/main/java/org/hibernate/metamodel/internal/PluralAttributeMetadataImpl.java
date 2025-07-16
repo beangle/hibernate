@@ -1,8 +1,6 @@
 /*
- * Hibernate, Relational Persistence for Idiomatic Java
- *
- * License: GNU Lesser General Public License (LGPL), version 2.1 or later
- * See the lgpl.txt file in the root directory or http://www.gnu.org/licenses/lgpl-2.1.html
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Red Hat Inc. and Hibernate Authors
  */
 package org.hibernate.metamodel.internal;
 
@@ -41,9 +39,8 @@ class PluralAttributeMetadataImpl<X, Y, E>
 			Member member,
 			AttributeClassification attributeClassification,
 			AttributeClassification elementClassification,
-			AttributeClassification listIndexOrMapKeyClassification,
-			MetadataContext metadataContext) {
-		super( propertyMapping, ownerType, member, attributeClassification, metadataContext );
+			AttributeClassification listIndexOrMapKeyClassification) {
+		super( propertyMapping, ownerType, member, attributeClassification );
 		this.collectionClassification = determineCollectionType( getJavaType(), propertyMapping );
 		this.elementClassification = elementClassification;
 		this.listIndexOrMapKeyClassification = listIndexOrMapKeyClassification;
@@ -144,19 +141,19 @@ class PluralAttributeMetadataImpl<X, Y, E>
 	}
 
 	private Class<?> getClassFromGenericArgument(java.lang.reflect.Type type) {
-		if ( type instanceof Class ) {
-			return (Class<?>) type;
+		if ( type instanceof Class<?> clazz ) {
+			return clazz;
 		}
-		else if ( type instanceof TypeVariable ) {
-			final java.lang.reflect.Type upperBound = ( (TypeVariable<?>) type ).getBounds()[0];
+		else if ( type instanceof TypeVariable<?> typeVariable ) {
+			final java.lang.reflect.Type upperBound = typeVariable.getBounds()[0];
 			return getClassFromGenericArgument( upperBound );
 		}
-		else if ( type instanceof ParameterizedType ) {
-			final java.lang.reflect.Type rawType = ( (ParameterizedType) type ).getRawType();
+		else if ( type instanceof ParameterizedType parameterizedType ) {
+			final java.lang.reflect.Type rawType = parameterizedType.getRawType();
 			return getClassFromGenericArgument( rawType );
 		}
-		else if ( type instanceof WildcardType ) {
-			final java.lang.reflect.Type upperBound = ( (WildcardType) type ).getUpperBounds()[0];
+		else if ( type instanceof WildcardType wildcardType ) {
+			final java.lang.reflect.Type upperBound = wildcardType.getUpperBounds()[0];
 			return getClassFromGenericArgument( upperBound );
 		}
 		else {

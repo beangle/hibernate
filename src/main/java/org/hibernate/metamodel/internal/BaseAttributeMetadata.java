@@ -1,8 +1,6 @@
 /*
- * Hibernate, Relational Persistence for Idiomatic Java
- *
- * License: GNU Lesser General Public License (LGPL), version 2.1 or later
- * See the lgpl.txt file in the root directory or http://www.gnu.org/licenses/lgpl-2.1.html
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Red Hat Inc. and Hibernate Authors
  */
 package org.hibernate.metamodel.internal;
 
@@ -30,8 +28,7 @@ public abstract class BaseAttributeMetadata<X, Y> implements AttributeMetadata<X
 			Property propertyMapping,
 			ManagedDomainType<X> ownerType,
 			Member member,
-			AttributeClassification attributeClassification,
-			MetadataContext metadataContext) {
+			AttributeClassification attributeClassification) {
 		this.propertyMapping = propertyMapping;
 		this.ownerType = ownerType;
 		this.member = member;
@@ -43,8 +40,8 @@ public abstract class BaseAttributeMetadata<X, Y> implements AttributeMetadata<X
 			// assume we have a MAP entity-mode "class"
 			declaredType = propertyMapping.getType().getReturnedClass();
 		}
-		else if ( member instanceof Field ) {
-			declaredType = ( (Field) member ).getType();
+		else if ( member instanceof Field field ) {
+			declaredType = field.getType();
 		}
                 //scala option
 		else if ( member instanceof Method m) {
@@ -54,8 +51,8 @@ public abstract class BaseAttributeMetadata<X, Y> implements AttributeMetadata<X
 				declaredType = m.getReturnType();
 			}
 		}
-		else if ( member instanceof MapMember ) {
-			declaredType = ( (MapMember) member ).getType();
+		else if ( member instanceof MapMember mapMember ) {
+			declaredType = mapMember.getType();
 		}
 		else {
 			throw new IllegalArgumentException( "Cannot determine java-type from given member [" + member + "]" );

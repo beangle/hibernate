@@ -1,8 +1,6 @@
 /*
- * Hibernate, Relational Persistence for Idiomatic Java
- *
- * License: GNU Lesser General Public License (LGPL), version 2.1 or later.
- * See the lgpl.txt file in the root directory or <http://www.gnu.org/licenses/lgpl-2.1.html>.
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Red Hat Inc. and Hibernate Authors
  */
 package org.hibernate.collection.spi;
 
@@ -13,6 +11,8 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Incubating;
+import org.hibernate.Internal;
+import org.hibernate.engine.spi.InstanceIdentity;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.metamodel.mapping.PluralAttributeMapping;
 import org.hibernate.persister.collection.CollectionPersister;
@@ -54,7 +54,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Gavin King
  */
 @Incubating
-public interface PersistentCollection<E> extends LazyInitializable {
+public interface PersistentCollection<E> extends LazyInitializable, InstanceIdentity {
 	/**
 	 * Get the owning entity. Note that the owner is only
 	 * set during the flush cycle, and when a new collection
@@ -360,7 +360,6 @@ public interface PersistentCollection<E> extends LazyInitializable {
 	 *
 	 * @see #injectLoadedState
 	 */
-	@SuppressWarnings("UnusedReturnValue")
 	boolean endRead();
 
 	/**
@@ -511,6 +510,13 @@ public interface PersistentCollection<E> extends LazyInitializable {
 	Object elementByIndex(Object index);
 
 	void initializeEmptyCollection(CollectionPersister persister);
+
+	/**
+	 * Get the session currently associated with this collection.
+	 * Declared here for use by Hibernate Reactive.
+	 */
+	@Internal
+	SharedSessionContractImplementor getSession();
 
 	/**
 	 * Is the collection newly instantiated?
