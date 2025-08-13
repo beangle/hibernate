@@ -163,6 +163,7 @@ public abstract class AbstractPersistentCollection<E> implements Serializable, P
 									session.getPersistenceContextInternal().getCollectionEntry( this );
 							if ( entry != null ) {
 								final CollectionPersister persister = entry.getLoadedPersister();
+								checkPersister( this, persister );
 								if ( persister.isExtraLazy() ) {
 									// TODO: support for extra-lazy collections was
 									//       dropped so this code should be obsolete
@@ -195,8 +196,8 @@ public abstract class AbstractPersistentCollection<E> implements Serializable, P
 			final CollectionEntry entry = session.getPersistenceContextInternal().getCollectionEntry( this );
 			if ( entry == null ) {
 				throwLazyInitializationExceptionIfNotConnected();
-				throwLazyInitializationException("collection not associated with session");
-				throw new AssertionFailure("impossible");
+				throwLazyInitializationException( "collection not associated with session" );
+				throw new AssertionFailure( "impossible" );
 			}
 			else {
 				if ( hasQueuedOperations() ) {
