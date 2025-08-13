@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 import org.hibernate.LockMode;
+import org.hibernate.collection.spi.PersistentBag;
+import org.hibernate.collection.spi.PersistentCollection;
+import org.hibernate.collection.spi.PersistentIdentifierBag;
 import org.hibernate.internal.log.LoggingHelper;
 import org.hibernate.metamodel.mapping.PluralAttributeMapping;
 import org.hibernate.spi.NavigablePath;
@@ -23,25 +26,30 @@ import org.hibernate.sql.results.jdbc.spi.RowProcessingState;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
+ * Initializer for both {@link PersistentBag} and {@link PersistentIdentifierBag}
+ * collections
+ *
  * @author Steve Ebersole
  */
-public class SetInitializer extends AbstractImmediateCollectionInitializer<AbstractImmediateCollectionInitializer.ImmediateCollectionInitializerData> {
+public class BagInitializer extends AbstractImmediateCollectionInitializer<AbstractImmediateCollectionInitializer.ImmediateCollectionInitializerData> {
 
 	private final DomainResultAssembler<?> elementAssembler;
+	private final DomainResultAssembler<?> collectionIdAssembler;
 
-	public SetInitializer(
+	public BagInitializer(
 			NavigablePath navigablePath,
-			PluralAttributeMapping setDescriptor,
+			PluralAttributeMapping bagDescriptor,
 			InitializerParent<?> parent,
 			LockMode lockMode,
 			DomainResult<?> collectionKeyResult,
 			DomainResult<?> collectionValueKeyResult,
 			boolean isResultInitializer,
 			AssemblerCreationState creationState,
-			Fetch elementFetch) {
+			Fetch elementFetch,
+			@Nullable Fetch collectionIdFetch) {
 		super(
 				navigablePath,
-				setDescriptor,
+				bagDescriptor,
 				parent,
 				lockMode,
 				collectionKeyResult,
@@ -50,6 +58,9 @@ public class SetInitializer extends AbstractImmediateCollectionInitializer<Abstr
 				creationState
 		);
 		this.elementAssembler = elementFetch.createAssembler( this, creationState );
+		this.collectionIdAssembler = collectionIdFetch == null
+				? null
+				: collectionIdFetch.createAssembler( this, creationState );
 	}
 
 	@Override
@@ -61,17 +72,29 @@ public class SetInitializer extends AbstractImmediateCollectionInitializer<Abstr
 		}
 	}
 
-        //ignore cast to hibernate collection instance, for extends persistent type.
-
 	@Override
 	protected void readCollectionRow(ImmediateCollectionInitializerData data, List<Object> loadingState) {
 		final RowProcessingState rowProcessingState = data.getRowProcessingState();
-		final Object element = elementAssembler.assemble( rowProcessingState );
-		if ( element == null ) {
-			// If element is null, then NotFoundAction must be IGNORE
-			return;
+		if ( collectionIdAssembler != null ) {
+			final Object collectionId = collectionIdAssembler.assemble( rowProcessingState );
+			if ( collectionId == null ) {
+				return;
+			}
+			final Object element = elementAssembler.assemble( rowProcessingState );
+			if ( element == null ) {
+				// If element is null, then NotFoundAction must be IGNORE
+				return;
+			}
+
+			loadingState.add( new Object[]{ collectionId, element } );
 		}
-		loadingState.add( element );
+		else {
+			final Object element = elementAssembler.assemble( rowProcessingState );
+			if ( element != null ) {
+				// If element is null, then NotFoundAction must be IGNORE
+				loadingState.add( element );
+			}
+		}
 	}
 
 	@Override
@@ -79,15 +102,22 @@ public class SetInitializer extends AbstractImmediateCollectionInitializer<Abstr
 		final Initializer<?> initializer = elementAssembler.getInitializer();
 		if ( initializer != null ) {
 			final RowProcessingState rowProcessingState = data.getRowProcessingState();
-      var i = getCollectionInstance( data ).entries(null);
+			final PersistentCollection<?> persistentCollection = getCollectionInstance( data );
+			assert persistentCollection != null;
+      var i = persistentCollection.entries(null);
       while(i.hasNext()){
         Object element = (Object) i.next();
         initializer.initializeInstanceFromParent( element, rowProcessingState );
       }
-//			final PersistentSet<?> set = (PersistentSet<?>)getCollectionInstance( data );
-//			assert set != null;
-//			for ( Object element : set ) {
-//				initializer.initializeInstanceFromParent( element, rowProcessingState );
+//      if ( persistentCollection instanceof PersistentBag<?> ) {
+//				for ( Object element : ( (PersistentBag<?>) persistentCollection ) ) {
+//					initializer.initializeInstanceFromParent( element, rowProcessingState );
+//				}
+//			}
+//			else {
+//				for ( Object element : ( (PersistentIdentifierBag<?>) persistentCollection ) ) {
+//					initializer.initializeInstanceFromParent( element, rowProcessingState );
+//				}
 //			}
 		}
 	}
@@ -112,6 +142,6 @@ public class SetInitializer extends AbstractImmediateCollectionInitializer<Abstr
 
 	@Override
 	public String toString() {
-		return "SetInitializer(" + LoggingHelper.toLoggableString( getNavigablePath() ) + ")";
+		return "BagInitializer(" + LoggingHelper.toLoggableString( getNavigablePath() ) + ")";
 	}
 }

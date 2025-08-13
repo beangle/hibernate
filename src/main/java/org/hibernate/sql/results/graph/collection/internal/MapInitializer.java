@@ -99,16 +99,26 @@ public class MapInitializer extends AbstractImmediateCollectionInitializer<Abstr
 		final Initializer<?> valueInitializer = mapValueAssembler.getInitializer();
 		if ( keyInitializer != null || valueInitializer != null ) {
 			final RowProcessingState rowProcessingState = data.getRowProcessingState();
-			final PersistentMap<?, ?> map = (PersistentMap<?, ?>)getCollectionInstance( data );
-			assert map != null;
-			for ( Map.Entry<?, ?> entry : map.entrySet() ) {
-				if ( keyInitializer != null ) {
-					keyInitializer.initializeInstanceFromParent( entry.getKey(), rowProcessingState );
-				}
-				if ( valueInitializer != null ) {
-					valueInitializer.initializeInstanceFromParent( entry.getValue(), rowProcessingState );
-				}
-			}
+      final var i = getCollectionInstance(data).entries(null);
+      while(i.hasNext()){
+        Map.Entry<?, ?> entry = (Map.Entry<?, ?>)i.next();
+        if ( keyInitializer != null ) {
+          keyInitializer.initializeInstanceFromParent( entry.getKey(), rowProcessingState );
+        }
+        if ( valueInitializer != null ) {
+          valueInitializer.initializeInstanceFromParent( entry.getValue(), rowProcessingState );
+        }
+      }
+//			final PersistentMap<?, ?> map = (PersistentMap<?, ?>)getCollectionInstance( data );
+//			assert map != null;
+//			for ( Map.Entry<?, ?> entry : map.entrySet() ) {
+//				if ( keyInitializer != null ) {
+//					keyInitializer.initializeInstanceFromParent( entry.getKey(), rowProcessingState );
+//				}
+//				if ( valueInitializer != null ) {
+//					valueInitializer.initializeInstanceFromParent( entry.getValue(), rowProcessingState );
+//				}
+//			}
 		}
 	}
 

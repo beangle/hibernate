@@ -105,11 +105,16 @@ public class ListInitializer extends AbstractImmediateCollectionInitializer<Abst
 		final Initializer<?> initializer = elementAssembler.getInitializer();
 		if ( initializer != null ) {
 			final RowProcessingState rowProcessingState = data.getRowProcessingState();
-			final PersistentList<?> list = (PersistentList<?>)getCollectionInstance( data );
-			assert list != null;
-			for ( Object element : list ) {
-				initializer.initializeInstanceFromParent( element, rowProcessingState );
-			}
+      var i = getCollectionInstance( data ).entries(null);
+      while(i.hasNext()){
+        Object element = (Object) i.next();
+        initializer.initializeInstanceFromParent( element, rowProcessingState );
+      }
+//			final PersistentList<?> list = (PersistentList<?>) getCollectionInstance( data );
+//			assert list != null;
+//			for ( Object element : list ) {
+//				initializer.initializeInstanceFromParent( element, rowProcessingState );
+//			}
 		}
 	}
 
