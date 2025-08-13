@@ -308,6 +308,12 @@ public abstract class AbstractPersistentCollection<E> implements Serializable, P
 		}
 	}
 
+	private boolean unfinishedLoading() {
+		final PersistenceContext persistenceContext = session.getPersistenceContext();
+		return persistenceContext.hasLoadContext()
+			&& !persistenceContext.getLoadContexts().isLoadingFinished();
+	}
+
 	private SharedSessionContractImplementor openTemporarySessionForLoading() {
 		if ( sessionFactoryUuid == null ) {
 			throwLazyInitializationException( "SessionFactory UUID not known; cannot create temporary session for loading" );
