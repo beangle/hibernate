@@ -119,13 +119,13 @@ public class PluralAttributeBuilder<D, C, E, K> {
 		}
                 // scala collection
 		else if (javaClass.getName().contains(".Set")|| javaClass.getName().contains(".HashSet")) {
-			return new SetAttributeImpl( builder, metadataContext );
+			return new SetAttributeImpl( builder );
 		}
 		else if (javaClass.getName().contains(".Buffer") || javaClass.getName().contains(".Seq")) {
-			return new BagAttributeImpl( builder, metadataContext );
+			return new BagAttributeImpl( builder );
 		}
 		else if (javaClass.getName().contains(".Map")|| javaClass.getName().contains(".HashMap")) {
-			return new MapAttributeImpl( builder, metadataContext );
+			return new MapAttributeImpl( builder );
 		}
 		throw new UnsupportedMappingException( "Unknown collection: " + attributeJtd.getJavaType() );
 	}

@@ -163,7 +163,7 @@ public abstract class AbstractPersistentCollection<E> implements Serializable, P
 									session.getPersistenceContextInternal().getCollectionEntry( this );
 							if ( entry != null ) {
 								final CollectionPersister persister = entry.getLoadedPersister();
-								checkPersister( this, persister );
+								//checkPersister( this, persister );
 								if ( persister.isExtraLazy() ) {
 									// TODO: support for extra-lazy collections was
 									//       dropped so this code should be obsolete
