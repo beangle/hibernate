@@ -82,11 +82,11 @@ public class SetInitializer extends AbstractImmediateCollectionInitializer<Abstr
 		final Initializer<?> initializer = elementAssembler.getInitializer();
 		if ( initializer != null ) {
 			final RowProcessingState rowProcessingState = data.getRowProcessingState();
-			final PersistentSet<?> set = (PersistentSet<?>)getCollectionInstance( data );
-			assert set != null;
-			for ( Object element : set ) {
-				initializer.initializeInstanceFromParent( element, rowProcessingState );
-			}
+      var i = getCollectionInstance( data ).entries(null);
+      while(i.hasNext()){
+        Object element = (Object) i.next();
+        initializer.initializeInstanceFromParent( element, rowProcessingState );
+      }
 		}
 	}
 
