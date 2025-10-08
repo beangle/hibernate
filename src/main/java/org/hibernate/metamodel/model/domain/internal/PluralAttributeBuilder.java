@@ -69,9 +69,9 @@ public class PluralAttributeBuilder<D, C, E, K> {
 			boolean isGeneric,
 			MetadataContext metadataContext) {
 
-		final JavaType<Y> attributeJtd =
+		final var attributeJtd =
 				metadataContext.getTypeConfiguration().getJavaTypeRegistry()
-						.getDescriptor( attributeMetadata.getJavaType() );
+						.resolveDescriptor( attributeMetadata.getJavaType() );
 
 		final var builder = new PluralAttributeBuilder<>(
 				attributeJtd,
@@ -137,11 +137,13 @@ public class PluralAttributeBuilder<D, C, E, K> {
 		if ( Map.class.isAssignableFrom( javaType )
 				|| javaType.getName().equals("scala.collection.mutable.Map")
 				|| javaType.getName().equals("scala.collection.mutable.HashMap")) {
-			return (SimpleDomainType<?>) determineSimpleType( attributeMetadata.getMapKeyValueContext(), metadataContext );
+			return (SimpleDomainType<?>)
+					determineSimpleType( attributeMetadata.getMapKeyValueContext(), metadataContext );
 		}
 
 		if ( List.class.isAssignableFrom( javaType ) || javaType.isArray() ) {
-			return metadataContext.getTypeConfiguration().getBasicTypeRegistry().getRegisteredType( Integer.class );
+			return metadataContext.getTypeConfiguration().getBasicTypeRegistry()
+					.getRegisteredType( Integer.class );
 		}
 
 		return null;

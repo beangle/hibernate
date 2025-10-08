@@ -78,6 +78,9 @@ public interface PersistentCollection<E> extends LazyInitializable, InstanceIden
 	 */
 	boolean isCollectionEmpty();
 
+  default Object getElementByIndex(Object index){
+    throw new UnsupportedOperationException( this.getClass().getName() +" don't have indexes" );
+  }
 	/**
 	 * After flushing, re-init snapshot state.
 	 *  @param key The collection instance key (fk value).
@@ -399,7 +402,7 @@ public interface PersistentCollection<E> extends LazyInitializable, InstanceIden
 	 *
 	 * @return The iterator
 	 */
-	Iterator<E> queuedAdditionIterator();
+	Iterator<?> queuedAdditionIterator();
 
 	/**
 	 * Get the "queued" orphans

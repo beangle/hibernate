@@ -130,13 +130,12 @@ public class PersistentList<E> extends AbstractPersistentCollection<E> implement
 		assert isInitializing();
 		assert list == null;
 
-		final CollectionPersister collectionDescriptor = attributeMapping.getCollectionDescriptor();
+		final var collectionDescriptor = attributeMapping.getCollectionDescriptor();
+		final var collectionSemantics = collectionDescriptor.getCollectionSemantics();
 
-		this.list = (List<E>) collectionDescriptor.getCollectionSemantics().instantiateRaw(
-				loadingStateList.size(),
-				collectionDescriptor
-		);
-
+		//noinspection unchecked
+		list = (List<E>) collectionSemantics.instantiateRaw( loadingStateList.size(), collectionDescriptor );
+		//noinspection unchecked
 		list.addAll( (List<E>) loadingStateList );
 	}
 
@@ -294,6 +293,10 @@ public class PersistentList<E> extends AbstractPersistentCollection<E> implement
 			}
 		}
 	}
+  @Override
+  public Object getElementByIndex(Object index) {
+    return get(((Number) index).intValue());
+  }
 
 	@Override
 	public E get(int index) {

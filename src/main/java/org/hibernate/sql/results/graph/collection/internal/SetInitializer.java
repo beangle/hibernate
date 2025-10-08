@@ -22,6 +22,8 @@ import org.hibernate.sql.results.jdbc.spi.RowProcessingState;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import static org.hibernate.internal.log.LoggingHelper.toLoggableString;
+
 /**
  * @author Steve Ebersole
  */
@@ -55,7 +57,7 @@ public class SetInitializer extends AbstractImmediateCollectionInitializer<Abstr
 	@Override
 	protected void forEachSubInitializer(BiConsumer<Initializer<?>, RowProcessingState> consumer, InitializerData data) {
 		super.forEachSubInitializer( consumer, data );
-		final Initializer<?> initializer = elementAssembler.getInitializer();
+		final var initializer = elementAssembler.getInitializer();
 		if ( initializer != null ) {
 			consumer.accept( initializer, data.getRowProcessingState() );
 		}
@@ -65,36 +67,30 @@ public class SetInitializer extends AbstractImmediateCollectionInitializer<Abstr
 
 	@Override
 	protected void readCollectionRow(ImmediateCollectionInitializerData data, List<Object> loadingState) {
-		final RowProcessingState rowProcessingState = data.getRowProcessingState();
+		final var rowProcessingState = data.getRowProcessingState();
 		final Object element = elementAssembler.assemble( rowProcessingState );
-		if ( element == null ) {
-			// If element is null, then NotFoundAction must be IGNORE
-			return;
+		if ( element != null ) {
+			loadingState.add( element );
 		}
-		loadingState.add( element );
+		// else if the element is null, then NotFoundAction must be IGNORE
 	}
 
 	@Override
 	protected void initializeSubInstancesFromParent(ImmediateCollectionInitializerData data) {
-		final Initializer<?> initializer = elementAssembler.getInitializer();
+		final var initializer = elementAssembler.getInitializer();
 		if ( initializer != null ) {
-			final RowProcessingState rowProcessingState = data.getRowProcessingState();
-      var i = getCollectionInstance( data ).entries(null);
-      while(i.hasNext()){
-        Object element = (Object) i.next();
-        initializer.initializeInstanceFromParent( element, rowProcessingState );
-      }
-//			final PersistentSet<?> set = (PersistentSet<?>)getCollectionInstance( data );
-//			assert set != null;
-//			for ( Object element : set ) {
-//				initializer.initializeInstanceFromParent( element, rowProcessingState );
-//			}
+			final var rowProcessingState = data.getRowProcessingState();
+			var i = getCollectionInstance( data ).entries(null);
+			while(i.hasNext()){
+				Object element = (Object) i.next();
+				initializer.initializeInstanceFromParent( element, rowProcessingState );
+			}
 		}
 	}
 
 	@Override
 	protected void resolveInstanceSubInitializers(ImmediateCollectionInitializerData data) {
-		final Initializer<?> initializer = elementAssembler.getInitializer();
+		final var initializer = elementAssembler.getInitializer();
 		if ( initializer != null ) {
 			initializer.resolveKey( data.getRowProcessingState() );
 		}
@@ -112,6 +108,6 @@ public class SetInitializer extends AbstractImmediateCollectionInitializer<Abstr
 
 	@Override
 	public String toString() {
-		return "SetInitializer(" + LoggingHelper.toLoggableString( getNavigablePath() ) + ")";
+		return "SetInitializer(" + toLoggableString( getNavigablePath() ) + ")";
 	}
 }

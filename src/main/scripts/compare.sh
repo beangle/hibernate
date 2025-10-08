@@ -50,6 +50,7 @@ extract(){
   "org/hibernate/metamodel/internal/BaseAttributeMetadata.java"
   "org/hibernate/metamodel/internal/PluralAttributeMetadataImpl.java"
   "org/hibernate/metamodel/model/domain/internal/PluralAttributeBuilder.java"
+  "org/hibernate/sql/results/graph/collection/internal/BagInitializer.java"
   "org/hibernate/sql/results/graph/collection/internal/ListInitializer.java"
   "org/hibernate/sql/results/graph/collection/internal/MapInitializer.java"
   "org/hibernate/sql/results/graph/collection/internal/SetInitializer.java"
@@ -61,7 +62,9 @@ extract(){
   done
 }
 
+echo "extract $1.."
 extract "$1"
+echo "extract $2..."
 extract "$2"
 cd /tmp
 
