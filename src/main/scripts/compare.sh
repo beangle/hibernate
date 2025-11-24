@@ -39,6 +39,7 @@ extract(){
   mkdir -p "$target"
   cd /tmp/hibernate/
   files=("org/hibernate/action/internal/CollectionUpdateAction.java"
+  "org/hibernate/boot/internal/SessionFactoryOptionsBuilder.java"
   "org/hibernate/collection/spi/AbstractPersistentCollection.java"
   "org/hibernate/collection/spi/PersistentArrayHolder.java"
   "org/hibernate/collection/spi/PersistentBag.java"

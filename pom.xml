@@ -12,7 +12,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>17</java.version>
+    <java.version>21</java.version>
     <mvn.gpg.version>1.6</mvn.gpg.version>
     <mvn.jar.version>3.2.0</mvn.jar.version>
     <mvn.compiler.version>3.8.1</mvn.compiler.version>
@@ -70,6 +70,7 @@
       <groupId>org.checkerframework</groupId>
       <artifactId>checker-qual</artifactId>
       <version>3.47.0</version>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>jakarta.persistence</groupId>
@@ -143,6 +144,7 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <!--
     <dependency>
       <groupId>jakarta.xml.bind</groupId>
       <artifactId>jakarta.xml.bind-api</artifactId>
@@ -167,6 +169,7 @@
         </exclusion>
       </exclusions>
     </dependency>
+    -->
     <dependency>
       <groupId>jakarta.inject</groupId>
       <artifactId>jakarta.inject-api</artifactId>
@@ -211,10 +214,11 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${mvn.compiler.version}</version>
         <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
+          <source>21</source>
+          <target>21</target>
           <release>${java.version}</release>
           <encoding>${project.build.sourceEncoding}</encoding>
+          <compilerArgs>--enable-preview</compilerArgs>
         </configuration>
       </plugin>
       <plugin>
@@ -241,6 +245,8 @@
                   <artifact>org.hibernate.orm:hibernate-core</artifact>
                   <excludes>
                     <exclude>org/hibernate/action/internal/CollectionUpdateAction</exclude>
+                    <exclude>org/hibernate/boot/internal/SessionFactoryOptionsBuilder</exclude>
+
                     <exclude>org/hibernate/collection/spi/AbstractPersistentCollection*</exclude>
                     <exclude>org/hibernate/collection/spi/PersistentArrayHolder</exclude>
                     <exclude>org/hibernate/collection/spi/PersistentBag*</exclude>
