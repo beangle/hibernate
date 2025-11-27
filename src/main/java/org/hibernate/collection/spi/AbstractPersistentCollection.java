@@ -177,9 +177,6 @@ public abstract class AbstractPersistentCollection<E> implements Serializable, P
 									read();
 								}
 							}
-							else {
-								throwLazyInitializationExceptionIfNotConnected();
-							}
 							return false;
 						}
 				);
@@ -193,9 +190,9 @@ public abstract class AbstractPersistentCollection<E> implements Serializable, P
 			return cachedSize;
 		}
 		else {
+			throwLazyInitializationExceptionIfNotConnected();
 			final var entry = getCollectionEntry();
 			if ( entry == null ) {
-				throwLazyInitializationExceptionIfNotConnected();
 				throwLazyInitializationException( "collection not associated with session" );
 				throw new AssertionFailure( "impossible" );
 			}
@@ -373,9 +370,9 @@ public abstract class AbstractPersistentCollection<E> implements Serializable, P
 
 	@Override
 	public boolean elementExists(Object element) {
+		throwLazyInitializationExceptionIfNotConnected();
 		final var entry = getCollectionEntry();
 		if ( entry == null ) {
-			throwLazyInitializationExceptionIfNotConnected();
 			throwLazyInitializationException( "collection not associated with session" );
 			throw new AssertionFailure( "impossible" );
 		}
@@ -392,44 +389,30 @@ public abstract class AbstractPersistentCollection<E> implements Serializable, P
 
 	protected Object readElementByIndex(final Object index) {
 		if ( !initialized ) {
-			class ExtraLazyElementByIndexReader implements LazyInitializationWork<Object> {
-				private boolean isExtraLazy;
-				private Object element;
-
-				@Override
-				public Object doWork() {
-					final var entry = getCollectionEntry();
-					final var persister = entry.getLoadedPersister();
-					checkPersister( AbstractPersistentCollection.this, persister );
-					isExtraLazy = persister.isExtraLazy();
-					if ( isExtraLazy ) {
-						if ( hasQueuedOperations() ) {
-							session.flush();
-						}
-						element = persister.getElementByIndex( entry.getLoadedKey(), index, session, owner );
+			return withTemporarySessionIfNeeded( () -> {
+				final var entry = getCollectionEntry();
+				final var persister = entry.getLoadedPersister();
+				checkPersister( AbstractPersistentCollection.this, persister );
+				if ( persister.isExtraLazy() ) {
+					if ( hasQueuedOperations() ) {
+						session.flush();
 					}
-					else {
-						read();
-					}
-					return null;
+					return persister.getElementByIndex( entry.getLoadedKey(), index, session, owner );
 				}
-			}
-
-			final ExtraLazyElementByIndexReader reader = new ExtraLazyElementByIndexReader();
-			withTemporarySessionIfNeeded( reader );
-			if ( reader.isExtraLazy ) {
-				return reader.element;
-			}
+				else {
+					read();
+					return UNKNOWN;
+				}
+			} );
 		}
 		return UNKNOWN;
-
 	}
 
 	@Override
 	public Object elementByIndex(Object index) {
+		throwLazyInitializationExceptionIfNotConnected();
 		final var entry = getCollectionEntry();
 		if ( entry == null ) {
-			throwLazyInitializationExceptionIfNotConnected();
 			throwLazyInitializationException( "collection not associated with session" );
 			throw new AssertionFailure( "impossible" );
 		}
@@ -791,7 +774,7 @@ public abstract class AbstractPersistentCollection<E> implements Serializable, P
 		final String roleCurrent = role;
 		final Object keyCurrent = key;
 
-		final var message = new StringBuilder( "Collection : " );
+		final var message = new StringBuilder( "Collection: " );
 		if ( roleCurrent != null ) {
 			message.append( collectionInfoString( roleCurrent, keyCurrent ) );
 		}
