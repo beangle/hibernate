@@ -16,7 +16,7 @@ download(){
     mkdir -p $zip_dir
     cd $zip_dir||exit
     echo "downloading $zip_url"
-    if wget $zip_url 2>/dev/null; then
+    if curl -O $zip_url 2>/dev/null; then
         echo "fetching $zip_file"
       else
         echo "hibernate-core-$1-sources.jar download error,compare aborted."
@@ -38,7 +38,8 @@ extract(){
   rm -rf "$target"
   mkdir -p "$target"
   cd /tmp/hibernate/
-  files=("org/hibernate/action/internal/CollectionUpdateAction.java"
+  files=(
+  "org/hibernate/action/internal/CollectionUpdateAction.java"
   "org/hibernate/boot/internal/SessionFactoryOptionsBuilder.java"
   "org/hibernate/collection/spi/AbstractPersistentCollection.java"
   "org/hibernate/collection/spi/PersistentArrayHolder.java"

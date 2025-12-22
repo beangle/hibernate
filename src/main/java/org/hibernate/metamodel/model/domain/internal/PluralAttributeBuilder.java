@@ -86,7 +86,7 @@ public class PluralAttributeBuilder<D, C, E, K> {
 				attributeMetadata.getMember()
 		);
 
-		final Class<Y> javaClass = attributeJtd.getJavaTypeClass();
+		final var javaClass = attributeJtd.getJavaTypeClass();
 		if ( Map.class.equals( javaClass ) ) {
 			return new MapAttributeImpl( builder );
 		}
@@ -117,7 +117,7 @@ public class PluralAttributeBuilder<D, C, E, K> {
 		else if ( Collection.class.isAssignableFrom( javaClass ) ) {
 			return new BagAttributeImpl( builder );
 		}
-                // scala collection
+    // scala collection
 		else if (javaClass.getName().contains(".Set")|| javaClass.getName().contains(".HashSet")) {
 			return new SetAttributeImpl( builder );
 		}
@@ -133,7 +133,7 @@ public class PluralAttributeBuilder<D, C, E, K> {
 	private static SimpleDomainType<?> determineListIndexOrMapKeyType(
 			PluralAttributeMetadata<?,?,?> attributeMetadata,
 			MetadataContext metadataContext) {
-		final Class<?> javaType = attributeMetadata.getJavaType();
+		final var javaType = attributeMetadata.getJavaType();
 		if ( Map.class.isAssignableFrom( javaType )
 				|| javaType.getName().equals("scala.collection.mutable.Map")
 				|| javaType.getName().equals("scala.collection.mutable.HashMap")) {
